@@ -1,4 +1,3 @@
-#### THIS CODE IS FROM https://github.com/shahariarrabby/deeplearning.ai/blob/master/COURSE%204%20Convolutional%20Neural%20Networks/Week%2004/Face%20Recognition/inception_blocks_v2.py
 
 import tensorflow as tf
 import numpy as np
@@ -14,7 +13,7 @@ from keras.layers.core import Lambda, Flatten, Dense
 
 def inception_block_1a(X):
     """
-    Implementation of an inception block
+    Реализация начального блока
     """
     
     X_3x3 = Conv2D(96, (1, 1), data_format='channels_first', name ='inception_3a_3x3_conv1')(X)
@@ -43,7 +42,7 @@ def inception_block_1a(X):
     X_1x1 = BatchNormalization(axis=1, epsilon=0.00001, name='inception_3a_1x1_bn')(X_1x1)
     X_1x1 = Activation('relu')(X_1x1)
         
-    # CONCAT
+    # Функция concat
     inception = concatenate([X_3x3, X_5x5, X_pool, X_1x1], axis=1)
 
     return inception
@@ -213,22 +212,22 @@ def inception_block_3b(X):
 
 def faceRecoModel(input_shape):
     """
-    Implementation of the Inception model used for FaceNet
+    Реализация начальной модели, используемой для FaceNet
     
     Arguments:
-    input_shape -- shape of the images of the dataset
+    input_shape -- форма изображений набора данных
 
     Returns:
-    model -- a Model() instance in Keras
+    model -- a Model() экземпляра в Keras
     """
         
-    # Define the input as a tensor with shape input_shape
+    # Определите входные данные как тензор с формой input_shape
     X_input = Input(input_shape)
 
-    # Zero-Padding
+    # Нулевое Заполнение
     X = ZeroPadding2D((3, 3))(X_input)
     
-    # First Block
+    # Первый блок
     X = Conv2D(64, (7, 7), strides = (2, 2), name = 'conv1')(X)
     X = BatchNormalization(axis = 1, name = 'bn1')(X)
     X = Activation('relu')(X)
@@ -237,7 +236,7 @@ def faceRecoModel(input_shape):
     X = ZeroPadding2D((1, 1))(X)
     X = MaxPooling2D((3, 3), strides = 2)(X)
     
-    # Second Block
+    # второй блок
     X = Conv2D(64, (1, 1), strides = (1, 1), name = 'conv2')(X)
     X = BatchNormalization(axis = 1, epsilon=0.00001, name = 'bn2')(X)
     X = Activation('relu')(X)
@@ -245,7 +244,7 @@ def faceRecoModel(input_shape):
     # Zero-Padding + MAXPOOL
     X = ZeroPadding2D((1, 1))(X)
 
-    # Second Block
+    # второй блок
     X = Conv2D(192, (3, 3), strides = (1, 1), name = 'conv3')(X)
     X = BatchNormalization(axis = 1, epsilon=0.00001, name = 'bn3')(X)
     X = Activation('relu')(X)
@@ -267,7 +266,7 @@ def faceRecoModel(input_shape):
     X = inception_block_3a(X)
     X = inception_block_3b(X)
     
-    # Top layer
+    # Верхний уровень
     X = AveragePooling2D(pool_size=(3, 3), strides=(1, 1), data_format='channels_first')(X)
     X = Flatten()(X)
     X = Dense(128, name='dense_layer')(X)
@@ -275,7 +274,7 @@ def faceRecoModel(input_shape):
     # L2 normalization
     X = Lambda(lambda  x: K.l2_normalize(x,axis=1))(X)
 
-    # Create model instance
+    # Создать экземпляр модели
     model = Model(inputs = X_input, outputs = X, name='FaceRecoModel')
         
     return model

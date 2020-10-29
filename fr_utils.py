@@ -1,5 +1,5 @@
-#### PART OF THIS CODE IS USING CODE FROM VICTOR SY WANG: https://github.com/iwantooxxoox/Keras-OpenFace/blob/master/utils.py ####
-#### THIS FILE IS FROM https://github.com/shahariarrabby/deeplearning.ai/blob/master/COURSE%204%20Convolutional%20Neural%20Networks/Week%2004/Face%20Recognition/fr_utils.py
+#### Часть этого кода использует код от Виктора Си Вана: https://github.com/iwantooxxoox/Keras-OpenFace/blob/master/utils.py ####
+#### Этот файл взят из https://github.com/shahariarrabby/deeplearning.ai/blob/master/COURSE%204%20Convolutional%20Neural%20Networks/Week%2004/Face%20Recognition/fr_utils.py
 
 import tensorflow as tf
 import numpy as np
@@ -129,11 +129,11 @@ conv_shape = {
 }
 
 def load_weights_from_FaceNet(FRmodel):
-    # Load weights from csv files (which was exported from Openface torch model)
+    # Загрузка Весов из csv-файлов (которые были экспортированы из Openface torch model)            # вес в данном случае переменная weight. Я считаю, что weight это скорее всего заданные показатели
     weights = WEIGHTS
     weights_dict = load_weights()
 
-    # Set layer weights of the model
+    # Установить вес слоя модели
     for name in weights:
         if FRmodel.get_layer(name) != None:
             FRmodel.get_layer(name).set_weights(weights_dict[name])
@@ -141,7 +141,7 @@ def load_weights_from_FaceNet(FRmodel):
             model.get_layer(name).set_weights(weights_dict[name])
 
 def load_weights():
-    # Set weights path
+    # Установить весовой путь
     dirPath = './weights'
     fileNames = filter(lambda f: not f.startswith('.'), os.listdir(dirPath))
     paths = {}
@@ -175,14 +175,14 @@ def load_weights():
 
 def load_dataset():
     train_dataset = h5py.File('datasets/train_happy.h5', "r")
-    train_set_x_orig = np.array(train_dataset["train_set_x"][:]) # your train set features
-    train_set_y_orig = np.array(train_dataset["train_set_y"][:]) # your train set labels
+    train_set_x_orig = np.array(train_dataset["train_set_x"][:]) # # особенности вашего набора train
+    train_set_y_orig = np.array(train_dataset["train_set_y"][:]) # ваши метки набора train
 
     test_dataset = h5py.File('datasets/test_happy.h5', "r")
-    test_set_x_orig = np.array(test_dataset["test_set_x"][:]) # your test set features
-    test_set_y_orig = np.array(test_dataset["test_set_y"][:]) # your test set labels
+    test_set_x_orig = np.array(test_dataset["test_set_x"][:]) # функции вашего тестового набора
+    test_set_y_orig = np.array(test_dataset["test_set_y"][:]) # метки вашего тестового набора
 
-    classes = np.array(test_dataset["list_classes"][:]) # the list of classes
+    classes = np.array(test_dataset["list_classes"][:]) # список классов
     
     train_set_y_orig = train_set_y_orig.reshape((1, train_set_y_orig.shape[0]))
     test_set_y_orig = test_set_y_orig.reshape((1, test_set_y_orig.shape[0]))
